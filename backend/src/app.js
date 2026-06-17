@@ -4,6 +4,7 @@ const app = express();
 
 const authRoutes = require("./routes/authRoutes");
 const tripRoutes = require("./routes/tripRoutes");
+const photoRoutes = require("./routes/photoRoutes");
 
 app.use(express.json());
 app.get("/",function(req,res){
@@ -12,5 +13,6 @@ app.get("/",function(req,res){
 
 app.use("/api/auth",authRoutes);
 app.use("/api/trips",tripRoutes);
+app.use("/api/photos", photoRoutes);
 
 module.exports = app;
