@@ -186,9 +186,37 @@ const joinTrip = async (req,res) =>{
     }
 };
 
+const getTripById = async (req, res) => {
+  try {
+
+    const trip = await Trip.findById(
+      req.params.id
+    ).populate(
+      "members.user",
+      "name email"
+    );
+
+    if (!trip) {
+      return res.status(404).json({
+        message: "Trip not found",
+      });
+    }
+
+    res.json(trip);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
+
 module.exports = {
     createTrip,
     getMyTrips,
+    getTripById,
     updateTrip,
     deleteTrip,
     createInvite,

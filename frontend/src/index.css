@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+:root {
+  --background: #FCDDBC;
+  --foreground: #1A1423;
+
+  --primary: #F56476;
+  --secondary: #7A9CC6;
+  --neutral: #69585F;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
