@@ -17,5 +17,10 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Data fetching inside useEffect that calls setState is the standard
+      // React pattern — this rule produces false positives for async fetches.
+      'react-hooks/set-state-in-effect': 'off',
+    },
   },
 ])
