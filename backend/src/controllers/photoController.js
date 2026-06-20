@@ -1,6 +1,9 @@
 const Photo = require("../models/Photo");
 const Trip = require("../models/Trip");
 const cloudinary = require("../config/cloudinary");
+const archiver = require("archiver");
+const axios = require("axios");
+
 
 const uploadPhoto = async (req, res) => {
   try {
@@ -111,8 +114,55 @@ const deletePhoto = async (req, res) => {
   }
 };
 
+const downloadAlbum = async (req, res) => {
+  try {
+
+    const photos = await Photo.find({
+      trip: req.params.tripId,
+    });
+
+    res.attachment("album.zip");
+
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+
+    archive.pipe(res);
+
+    for (const photo of photos) {
+
+      const response = await axios({
+        method: "get",
+        url: photo.imageUrl,
+        responseType: "stream",
+      });
+
+      archive.append(
+        response.data,
+        {
+          name:
+            photo.cloudinaryId +
+            ".jpg",
+        }
+      );
+    }
+
+    await archive.finalize();
+
+  }catch (error) {
+
+  console.log(error);
+
+  res.status(500).json({
+    message: error.message,
+  });
+
+}
+};
+
 module.exports = {
   uploadPhoto,
   getTripPhotos,
   deletePhoto,
+  downloadAlbum,
 };

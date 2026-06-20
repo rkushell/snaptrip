@@ -68,3 +68,14 @@ export const getTripById = async (
   return response.data;
 
 };
+
+export const downloadAlbum = async (tripId) => {
+  const response = await axiosInstance.get(
+    `/photos/download/${tripId}`,
+    {
+      responseType: "blob",
+    }
+  );
+
+  return response.data;
+};

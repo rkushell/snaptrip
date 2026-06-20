@@ -9,6 +9,7 @@ import {
   deletePhoto,
   createInvite,
   getTripById,
+  downloadAlbum,
 } from "../api/tripApi";
 
 function TripPage() {
@@ -19,6 +20,7 @@ function TripPage() {
   const [inviteCode, setInviteCode] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [trip, setTrip] = useState(null);
+  const [selectedMember, setSelectedMember] = useState("");
 
   const fetchTrip = async () => {
     try {
@@ -75,6 +77,27 @@ function TripPage() {
     }
   };
 
+  const handleDownloadAlbum = async () => {
+  try {
+    const data = await downloadAlbum(tripId);
+
+    const url = window.URL.createObjectURL(data);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "album.zip";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
   return (
     <>
       <Navbar />
@@ -129,12 +152,69 @@ function TripPage() {
           </>
         )}
 
+        <button onClick={handleDownloadAlbum}>
+          Download Album ZIP
+        </button>
+
         <input
           type="file"
           onChange={handleUpload}
         />
 
         <div>
+
+          <select
+            value={selectedMember}
+            onChange={(e) =>
+              setSelectedMember(e.target.value)
+            }
+          >
+            <option value="">
+              All Members
+            </option>
+
+            {
+              trip &&
+              trip.members.map(
+                (member) => (
+                  <option
+                    key={member.user._id}
+                    value={member.user.name}
+                  >
+                    {member.user.name}
+                  </option>
+                )
+              )
+            }
+
+          </select>
+          
+          <select
+            value={selectedMember}
+            onChange={(e) =>
+              setSelectedMember(e.target.value)
+            }
+          >
+            <option value="">
+              All Members
+            </option>
+
+            {
+              trip &&
+              trip.members.map(
+                (member) => (
+                  <option
+                    key={member.user._id}
+                    value={member.user.name}
+                  >
+                    {member.user.name}
+                  </option>
+                )
+              )
+            }
+
+          </select>
+
           <input
             placeholder="Search uploader"
             value={searchTerm}
@@ -143,32 +223,51 @@ function TripPage() {
             }
           />
 
-          {photos
-            .filter((photo) =>
-              photo.uploadedBy.name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-            )
-            .map((photo) => (
-              <div key={photo._id}>
-                <img
-                  src={photo.imageUrl}
-                  width="250"
-                  alt=""
-                  onClick={() =>
-                    setSelectedPhoto(photo)
-                  }
-                />
+          {
+            photos
+              .filter(
+                (photo) =>
+                  photo.uploadedBy?.name
+                    .toLowerCase()
+                    .includes(
+                      searchTerm.toLowerCase()
+                    )
+              )
+              .filter(
+                (photo) =>
+                  selectedMember === "" ||
+                  photo.uploadedBy?.name === selectedMember
+              )
+              .map((photo) => (
+                <div key={photo._id}>
+                  <img
+                    src={photo.imageUrl}
+                    width="250"
+                    alt=""
+                    onClick={() =>
+                      setSelectedPhoto(photo)
+                    }
+                  />
 
-                <button
-                  onClick={() =>
-                    handleDelete(photo._id)
-                  }
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() =>
+                      handleDelete(photo._id)
+                    }
+                  >
+                    Delete
+                  </button>
+
+                  <a
+                    href={photo.imageUrl}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Download
+                  </a>
+                </div>
+              ))
+          }
         </div>
       </div>
 
