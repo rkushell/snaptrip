@@ -1,12 +1,12 @@
-# SnapTrip 📸🌴
+# SnapTrip
 
 A modern, full-stack photo-sharing application built for friends and families to collaboratively share and manage memories from their trips.
 
-**🔴 Live Demo:** [https://snaptrip-frontend.onrender.com](https://snaptrip-frontend.onrender.com)
+**Live Demo:** [https://snaptrip-frontend.onrender.com](https://snaptrip-frontend.onrender.com)
 
 ---
 
-## ✨ Features
+## Features
 
 - **Create & Join Trips:** Easily spin up a new trip and invite friends using a unique invite code.
 - **Collaborative Galleries:** Everyone in the trip can upload photos to a shared gallery in real-time.
@@ -14,7 +14,7 @@ A modern, full-stack photo-sharing application built for friends and families to
 - **Download Albums:** Download a single photo or bulk-download the entire trip album as a `.zip` file.
 - **Secure Authentication:** JWT-based authentication with encrypted passwords and rate limiting.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend:**
 - React 19 (Vite)
@@ -29,11 +29,11 @@ A modern, full-stack photo-sharing application built for friends and families to
 - JWT (Authentication)
 - Helmet & Express Rate Limit (Security)
 
-## 🚀 Running Locally
+## Running Locally
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/snaptrip.git
+git clone https://github.com/rkushell/snaptrip.git
 cd snaptrip
 ```
 
